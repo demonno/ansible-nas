@@ -1,0 +1,37 @@
+- name: Pihole Docker Container
+  docker_container:
+    name: pihole
+    image: pihole/pihole:latest
+    pull: true
+    volumes:
+      - "{{ pihole_config_directory }}:/etc/pihole"
+      - "{{ pihole_config_directory }}/dnsmasq.d:/etc/dnsmasq.d"
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp" # Only required if you are using Pi-hole as your DHCP server
+      - "{{ pihole_port }}:80/tcp"
+    env:
+      TZ: "{{ ansible_nas_timezone }}"
+      WEBPASSWORD: "{{ pihole_password  }}"
+    restart_policy: unless-stopped
+    memory: "{{ pihole_memory }}"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.pihole.rule: "Host(`pihole.localhost`)"
+      traefik.http.services.portainer.loadbalancer.server.port: "{{ pihole_port }}"
+      homepage.group: Networking
+      homepage.icon: https://upload.wikimedia.org/wikipedia/commons/0/00/Pi-hole_Logo.png
+      homepage.href: "https://{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:{{ pihole_port }}"
+      homepage.description: Pi-hole – Network-wide Ad Blocking
+      homepage.widget.type: pihole
+      homepage.widget.url: "https://{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:{{ pihole_port }}"
+  when: pihole_enabled is true
+
+- name: Stop pyLoad
+  block:
+    - name: Stop pyLoad
+      community.docker.docker_container:
+        name: "{{ pihole_container_name }}"
+        state: absent
+  when: pihole_enabled is false

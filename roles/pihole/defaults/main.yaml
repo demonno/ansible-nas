@@ -1,0 +1,17 @@
+---
+pihole_enabled: false
+pihole_available_externally: false
+
+pihole_timezone: "{{ ansible_nas_timezone }}"
+
+# directories
+pihole_config_directory: "{{ docker_home }}/pihole"
+
+# network
+pihole_port: "8083"
+pihole_hostname: "pihole"
+
+# specs
+pihole_memory: 1g
+## Override with stronger password if exposing publcly
+pihole_password: passwd
