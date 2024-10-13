@@ -1,3 +1,4 @@
 {
-    "yaml.schemaStore.enable": false
+    "yaml.schemaStore.enable": false,
+    "ansible.python.interpreterPath": "/Users/demurnodia/.pyenv/versions/3.9.16/bin/python"
 }

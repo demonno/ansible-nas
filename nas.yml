@@ -317,6 +317,10 @@
       tags:
         - paperless_ng
 
+    - role: pihole
+      tags:
+        - pihole
+
     - role: piwigo
       tags:
         - piwigo

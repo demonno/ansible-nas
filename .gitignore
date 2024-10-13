@@ -10,7 +10,7 @@ roles/geerlingguy.docker
 roles/geerlingguy.nfs
 website/.docusaurus
 website/node_modules
-
+.vscode/settings.json
 # Vim
 [._]sw[a-p]
 
